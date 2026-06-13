@@ -1,3 +1,7 @@
+---
+description: Run the @smoke test suite and display a formatted pass/fail summary. Use when the user wants a quick health check of the target site.
+---
+
 # /run-smoke
 
 Run the smoke test suite and display a clean pass/fail summary.

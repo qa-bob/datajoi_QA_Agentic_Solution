@@ -1,3 +1,13 @@
+---
+description: Crawls a live website, extracts structure (nav, forms, pages, headings, CTAs), and produces a fully-populated site.config.json. Use when onboarding a new site, running /analyze-site, or verifying config accuracy after a redesign.
+model: claude-sonnet-4-6
+tools:
+  - Read
+  - Write
+  - WebFetch
+  - Bash
+---
+
 # Agent: site-analyzer
 
 ## Role

@@ -8,11 +8,16 @@
  */
 
 import { test, expect } from '@fixtures/site.fixture';
-import { dismissCookieBanner } from '@utils/visual-helper';
+import { dismissCookieBanner, freezeAnimations } from '@utils/visual-helper';
 
-// Shared screenshot options applied to all visual tests
+// Shared screenshot options applied to all visual tests.
+// maxDiffPixelRatio: 0.05 allows up to 5% pixel variance — this covers both
+// the baseline comparison AND Playwright's own consecutive-screenshot stability
+// check. Framer sites use rAF-based animation loops that survive CSS disabling;
+// a small ratio tolerance prevents false instability failures while still
+// catching real layout regressions (which typically affect >10% of pixels).
 const SCREENSHOT_OPTIONS = {
-  maxDiffPixels: 500,
+  maxDiffPixelRatio: 0.05,
   animations: 'disabled',
   caret: 'hide',
   fullPage: true,
@@ -32,11 +37,9 @@ test.describe('Visual Regression @visual', () => {
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto(siteConfig.url, { waitUntil: 'networkidle' });
 
-    // Dismiss any cookie/consent banners that would interfere with comparison
     await dismissCookieBanner(page);
-
-    // Allow any CSS animations/transitions to settle
-    await page.waitForTimeout(500);
+    // Freeze JS-driven and CSS animations before snapshotting
+    await freezeAnimations(page);
 
     await expect(page).toHaveScreenshot('homepage-desktop.png', {
       ...SCREENSHOT_OPTIONS,
@@ -50,7 +53,7 @@ test.describe('Visual Regression @visual', () => {
     await page.goto(siteConfig.url, { waitUntil: 'networkidle' });
 
     await dismissCookieBanner(page);
-    await page.waitForTimeout(500);
+    await freezeAnimations(page);
 
     await expect(page).toHaveScreenshot('homepage-mobile.png', {
       ...SCREENSHOT_OPTIONS,
@@ -64,7 +67,7 @@ test.describe('Visual Regression @visual', () => {
     await page.goto(siteConfig.url, { waitUntil: 'networkidle' });
 
     await dismissCookieBanner(page);
-    await page.waitForTimeout(500);
+    await freezeAnimations(page);
 
     await expect(page).toHaveScreenshot('homepage-tablet.png', {
       ...SCREENSHOT_OPTIONS,

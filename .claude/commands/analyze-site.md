@@ -1,3 +1,7 @@
+---
+description: Analyze the live site URL from site.config.json, inspect its structure (nav, forms, headings, CTAs), and produce an updated site.config.json. Use when onboarding a site or verifying config accuracy.
+---
+
 # /analyze-site
 
 Analyze a live website and produce a fully-populated `site.config.json`.

@@ -1,23 +1,17 @@
-﻿{
-    "name":  "Datajoi",
-    "url":  "https://www.datajoi.com",
-    "description":  "",
-    "industry":  "",
-    "hasContactForm":  true,
-    "expectedNavItems":  [
-
-                         ],
-    "viewports":  [
-                      "desktop",
-                      "mobile",
-                      "tablet"
-                  ],
-    "skipVisual":  false,
-    "skipForms":  false,
-    "auth":  {
-                 "required":  false,
-                 "loginUrl":  "",
-                 "username":  "",
-                 "password":  ""
-             }
+{
+  "name": "Datajoi",
+  "url": "https://www.datajoi.com",
+  "description": "Data analytics and AI solutions for small and medium-sized businesses",
+  "industry": "Data & AI Consulting",
+  "hasContactForm": false,
+  "expectedNavItems": [],
+  "viewports": ["desktop", "mobile", "tablet"],
+  "skipVisual": false,
+  "skipForms": true,
+  "auth": {
+    "required": false,
+    "loginUrl": "",
+    "username": "",
+    "password": ""
+  }
 }

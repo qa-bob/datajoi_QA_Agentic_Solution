@@ -1,3 +1,7 @@
+---
+description: Parse test-results/results.json and display a structured per-suite summary with failures, flaky tests, and suggested fixes. Use after running any test suite.
+---
+
 # /generate-report
 
 Open the Playwright HTML report and display a structured summary of test results.

@@ -1,3 +1,16 @@
+---
+description: Generates site-specific Playwright + TypeScript test files and Page Object Model classes for features not covered by the shared test suite. Use when /generate-full-suite is running, or when the user asks for tests on a specific page or feature.
+model: claude-sonnet-4-6
+tools:
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
+  - WebFetch
+  - Bash
+---
+
 # Agent: test-generator
 
 ## Role

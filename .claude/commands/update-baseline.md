@@ -1,3 +1,7 @@
+---
+description: Capture new visual regression baseline screenshots after an intentional design change on the target site. Run after confirming the design change is correct and deliberate.
+---
+
 # /update-baseline
 
 Capture new visual regression baseline screenshots after intentional design changes.

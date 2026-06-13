@@ -92,6 +92,53 @@ export async function setViewport(page: Page, viewport: ViewportName): Promise<v
   await page.setViewportSize(VIEWPORTS[viewport]);
 }
 
+// ── Animation freeze ─────────────────────────────────────────────────────────
+
+/**
+ * Freeze all animations on the page before taking a visual snapshot.
+ *
+ * Playwright's `animations: 'disabled'` only blocks CSS animations declared
+ * with @keyframes. Framer and other JS-driven frameworks animate via the Web
+ * Animations API and requestAnimationFrame, which remain active between
+ * consecutive Playwright screenshots and cause instability failures.
+ *
+ * This function:
+ * 1. Injects CSS that stops all CSS animations/transitions cold.
+ * 2. Calls `.finish()` on every running Web Animation to jump to its end state.
+ * 3. Scrolls to the bottom so scroll-triggered entrance effects are complete.
+ * 4. Returns to the top and waits for the paint to settle.
+ */
+export async function freezeAnimations(page: Page): Promise<void> {
+  // Step 1: inject CSS to hard-stop all CSS animations and transitions
+  await page.addStyleTag({
+    content: `
+      *, *::before, *::after {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+      }
+    `,
+  });
+
+  // Step 2: complete all running Web Animations (Framer's JS-driven transitions).
+  // Note: Framer also uses rAF-based loops that survive this — those are handled
+  // by raising maxDiffPixelRatio in the toHaveScreenshot options.
+  await page.evaluate(() => {
+    document.getAnimations().forEach((a) => {
+      try { a.finish(); } catch { /* some animations don't support finish() */ }
+    });
+  });
+
+  // Step 3: scroll to bottom to trigger all scroll-based entrance effects,
+  // then return to top so the screenshot captures the full page from the start
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.evaluate(() => window.scrollTo(0, 0));
+
+  // Step 4: brief pause for the final paint after the animation freeze
+  await page.waitForTimeout(500);
+}
+
 // ── Cookie/banner dismissal ──────────────────────────────────────────────────
 
 /**
