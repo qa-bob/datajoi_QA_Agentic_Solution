@@ -1,20 +1,8 @@
 name: Playwright Tests
 
+# Manual only: the QA workflow (qa.yml) now runs smoke tests on push/PR and the scheduled suites.
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
-    inputs:
-      test_tag:
-        description: 'Test tag to run (e.g. @smoke, @navigation, @forms). Leave blank for all tests.'
-        required: false
-        default: ''
-      site_url:
-        description: 'Override target site URL (leave blank to use site.config.json)'
-        required: false
-        default: ''
 
 env:
   CI: true
